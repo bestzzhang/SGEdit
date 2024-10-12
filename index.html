@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SGEdit: Bridging LLM with Text2Image Generative Model for Scene Graph-based Image Editing">
+  <meta name="keywords" content="Scene Graph, LLM, Diffusion Model, Text-Guided Generation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SGEdit</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SGEdit: Bridging LLM with Text2Image Generative Model for Scene Graph-based Image Editing</h1>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="">Zhiyuan Zhang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.dongdongchen.bid/" target="_blank">Dongdong Chen</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.cityu.edu.hk/stfprofile/jingliao.htm" target="_blank">Jing Liao</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>City University of Hong Kong,</span>
+            <span class="author-block"><sup>2</sup>Microsoft GenAI</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="" target="_blank" 
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+              </span> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <img id="teaser" src="./static/images/teaser.png"
+      class="interpolation-image"
+      alt="Teaser image."/>
+
+      <h2 class="subtitle has-text-centered">
+        <span class="">Examples of scene graph-based edits performed by our framework, including changing relationships or replacing, adding, and removing elements.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <!-- <div class="column is-full-width"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Scene graphs offer a structured, hierarchical representation of images, with nodes and edges symbolizing objects and the relationships among them. It can serve as a natural interface for image editing, dramatically improving precision and flexibility.
+          </p>
+          <p>
+            Leveraging this benefit, we introduce a new framework that integrates large language model (LLM) with Text2Image generative model for scene graph-based image editing. This integration enables precise modifications at the object level and creative recomposition of scenes without compromising overall image integrity. Our approach involves two primary stages: 
+          </p>
+          <ol>
+            <li>Utilizing a LLM-driven scene parser, we construct an image's scene graph, capturing key objects and their interrelationships, as well as parsing fine-grained attributes such as object masks and descriptions. These annotations facilitate concept learning with a fine-tuned diffusion model, representing each object with an optimized token and detailed description prompt. </li>
+            <li>During the image editing phase, a LLM editing controller guides the edits towards specific areas. These edits are then implemented by an attention-modulated diffusion editor, utilizing the fine-tuned model to perform object additions, deletions, replacements, and adjustments. </li>
+          </ol>
+          <p>
+            Through extensive experiments, we demonstrate that our framework significantly outperforms existing image editing methods in terms of editing precision and scene aesthetics.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<!-- Methods section -->
+<Section>
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Methods</h2>
+    
+    <div class="column is-full-width">
+      <div class="content has-text-justified">
+        <img src="static/images/overview.png">
+        <p> 
+          Our approach predicts a scene graph as a user interface, enabling modifications to nodes and edges for various tasks, such as changing relationships or replacing, adding, and removing elements. 
+          By integrating LLM and Text2Image generative models, users can explore diverse compositions in their images, ensuring that these alterations accurately reflect the structural changes depicted in the modified scene graph. 
+        </p>
+      </div>
+    </div>
+    
+  </div>
+</Section>
+<!-- Methods section -->
+
+
+<!-- Results -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered"> Results </h2>
+    
+    <!-- Text-to-Vector Generation -->
+    <!-- <div class="hero-body"> -->
+    <div class="column is-full-width">
+
+      <div class="columns is-centered has-text-centered is-variable">
+        <div class="column is-full-width">
+          <h2 class="title is-4"> Comparisons with other baselines </h2>
+        </div>
+      </div>
+
+
+      <!-- image demo -->
+      <div class="container"> 
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/comparison_1.png">
+          </div>
+          <div class="item">
+            <img src="static/images/comparison_2.png">
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns is-centered has-text-centered is-variable">
+        <div class="column is-full-width">
+          <p>
+            From left to right: (a) Input images; (b) Scene graphs and user edits; (c) SIMSG [Dhamo et al. 2020]; (d) SGDiff [Yang et al. 2022]; (e) Break-a-scene [Avrahami et al. 2023]; (f) InstructPix2Pix [Brooks et al. 2023]; (g) Ours.
+          </p>
+        </div>
+      </div>
+
+    <!-- SVG Generation with Adjustable Levels of Details -->
+    <!-- <div class="hero-body"> -->
+    <div class="column is-full-width">
+      
+      <div class="columns is-centered has-text-centered is-variable">
+        <div class="column is-full-width">
+          <h2 class="title is-4">Ablation studies</h2>
+        </div>
+      </div>
+
+      <!-- image demo -->
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/abl1.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl2.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl3.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl4.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl5.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl6.png" width="70%">
+          </div>
+          <div class="item">
+            <img src="static/images/abl7.png" width="70%">
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered is-variable">
+        <div class="column is-full-width">
+          <p>
+            Ablation studies on concept learning (1-2); scene graph-to-layout generation (3); object removal (4); object insertion (5-7).
+          </p>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</section>
+<!-- Results -->
+
+
+<!-- More Applications -->
+ 
+<Section>
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Applications</h2>
+    
+    <div class="column is-full-width">
+      <div class="content has-text-justified">
+        <img src="static/images/application.png">
+        <p> 
+          Our approach predicts a scene graph as a user interface, enabling modifications to nodes and edges for various tasks, such as changing relationships or replacing, adding, and removing elements. 
+          By integrating LLM and Text2Image generative models, users can explore diverse compositions in their images, ensuring that these alterations accurately reflect the structural changes depicted in the modified scene graph. 
+        </p>
+      </div>
+    </div>
+    
+  </div>
+
+</Section>
+<!-- More Applications -->
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
